@@ -1,3 +1,7 @@
+## 2026-10-28 — Claw pose visualization
+
+- Connected the claw jaws to the single arm with a visible hinge mount and crossbar.
+- Added an adjustable raised-arm top-view reach percentage; the beam, claw, and obstacle footprint shorten together when the arm is raised.
 # Changelog
 
 ## 2026-10-28 — Direct robot run prototype
