@@ -1,30 +1,49 @@
-# Connecting to a Wombat
+# Run on a Wombat over Wi-Fi
 
-## Current workflow
+Wombat Blocks can use the Wombat's Voldigate HTTP service to send generated C to an existing KISS C project, compile it, start it, stream its console output, and request a stop. KIPR's Wombat OS starts Voldigate with `node express.js`; its server defaults to port `8888`.
 
-1. Connect the Chromebook/computer to the Wombat's Wi-Fi.
-2. In Wombat Blocks, choose **Open KISS IDE**, enter the IP shown on the controller, and open the IDE. The documented default port is `8888`.
-3. In Wombat Blocks, choose **View generated C** and copy or download the full C file.
-4. In the KISS IDE tab, create/open a project, paste or import the C program, compile, and run it there.
+## One-time setup
 
-The KISS IDE is hosted by the Wombat and is usable from a browser. The helper only opens `http://<robot-ip>:8888`; it does not send code or establish a robot-control connection.
+1. Connect the Chromebook/computer to the Wombat's own Wi-Fi network.
+2. Open the Wombat KISS IDE once and create a dedicated **C** project, for example `Wombat Blocks`. This keeps its `src/main.c` separate from other robot programs.
+3. Open the extracted Wombat Blocks folder in a browser. Keep the `blockly/` directory beside the HTML file.
 
-## Direct Run button feasibility
+## Run a program
 
-A direct **Run on robot** workflow is feasible if the robot offers a supported interface for project/source upload, compile status, execution, stop, and output. Merely opening `http://<robot-ip>:8888` is not enough to transfer and execute the generated program. The KIPR material reviewed documents browser access to KISS but does not describe a stable external upload/build/run API.
+1. In Wombat Blocks, select **Run on robot**.
+2. Enter the Wombat's Wi-Fi IP address from its controller screen and select **Connect**.
+3. Select the KISS user and the dedicated C project.
+4. Select **Compile & run** and confirm the dialog. The app replaces that project's `src/main.c`, compiles it on the Wombat, and starts the resulting program.
+5. Watch the output in the dialog. Select **Stop robot** to call the Wombat stop route.
 
-A review of the KIPR material and public Voldigate IDE source confirmed how the browser IDE is reached and how the simulator executes programs, but did not identify a supported external robot-side API for source upload, compile, run, stop, or status. Voldigate is the simulator IDE, so its internal worker/compile mechanisms are not evidence of a Wombat firmware API. A direct-run implementation should wait for KIPR's documented interface or a known firmware endpoint. Browser-origin, local-network access, authentication, and firmware-version behavior would also need to be resolved.
+The IDE can still be opened separately from the dialog. The interface uses the official project/user listing routes rather than creating accounts or projects behind the user's back.
 
-References:
+## API mapping
+
+The client uses routes in KIPR's Voldigate server source:
+
+- `GET /get-users` and `GET /get-projects?userName=…` populate the selectors.
+- `POST /save-file-content` writes generated code to the selected project's `src/main.c`.
+- `POST /compile-code` compiles the C project and returns compile diagnostics.
+- `GET /run-code?userName=…&projectName=…&activeLanguage=c` starts the program and streams console output as server-sent events.
+- `POST /stop-code` stops the current process and requests motors off.
+
+The source has a permissive CORS middleware for these later routes, so a browser-hosted editor can call them cross-origin. Project creation/upload routes are ordered before that middleware; Wombat Blocks therefore requires a project created in KISS and does not try to create one over the network.
+
+## Browser and firmware limits
+
+- The computer must remain connected to the robot's Wi-Fi. Use the IP shown by that Wombat; port `8888` is the documented default.
+- Browser local-network permission and CORS behavior depend on the browser and how the HTML is opened. If a browser blocks access from the extracted `file://` page, open the app from a local HTTP server on the same computer. A public HTTPS host may block HTTP requests to the robot as mixed content.
+- API behavior can vary by firmware/Voldigate version. Current KIPR `wombat-os` config starts the `voldigate-slim-wombat` service. The source reviewed includes the routes above, but older images may differ.
+- A successful compile is not a physical validation. Confirm motor/servo ports and calibration, keep the robot supervised, and test with wheels lifted before driving. Sensor wiring and generated motion assumptions still matter.
+- If the browser loses its event stream, the robot may continue running. The app will state that robot status is unknown; reconnect or use the controller's own stop controls. Do not assume a lost browser connection stopped the motors.
+- No Wombat was connected during implementation, so the direct-run workflow still needs a live hardware check on the target robot and browser.
+
+## KIPR references
+
+- [Wombat OS](https://github.com/kipr/wombat-os) describes the OS build and lists Voldigate as a required package.
+- [Wombat OS Voldigate service definition](https://github.com/kipr/wombat-os/blob/main/configFiles/voldigate.service) starts the Wombat IDE server with `node express.js`.
+- [Voldigate server source](https://github.com/kipr/voldigate/blob/main/express.js) defines the project, compile, run, stop, CORS, and output-stream routes used here.
 - [KIPR Wombat hardware/software page](https://www.kipr.org/kipr/hardware-software) describes the IDE hosted on the Wombat and accessed over Wi-Fi.
 - [KIPR's Writing Your First Program guide](https://www.kipr.org/wp-content/uploads/2025/08/Writing_Your_First_Program.pdf) explains the controller IP and default IDE port `8888`.
-- [KIPR Voldigate source](https://github.com/kipr/voldigate) describes the simulator IDE; it does not establish a robot web API.
 
-## Safe robot bring-up
-
-- Confirm motor ports/signs and servo ports on the actual robot.
-- Lift the drive wheels for the first motor checks.
-- Start at low speed and calibrate straight distance and each pivot direction separately.
-- Move servos in small steps and record safe physical endpoints.
-- Verify sensor port wiring and log raw analog/digital readings before tuning thresholds.
-- Keep a reachable stop control and supervise the first field runs.

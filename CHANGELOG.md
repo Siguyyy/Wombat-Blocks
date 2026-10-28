@@ -1,9 +1,15 @@
 # Changelog
 
+## 2026-10-28 — Direct robot run prototype
+
+- Added the Voldigate API workflow to discover KISS users and C projects, write generated `main.c`, compile, stream output, and stop a run.
+- Added an action-time warning that the selected project's `src/main.c` will be replaced and the program will run on physical hardware.
+- Uses documented-in-source routes available in the Wombat OS Voldigate service; browser local-network permissions and firmware variation still need testing on an actual Wombat.
+
 ## 2026-10-28 — KISS IDE launcher
 
 - Added an IP-address helper that opens the Wombat-hosted KISS IDE at port 8888.
-- Clarified in the interface and connection guide that direct upload/compile/run is not available through a documented external API.
+- The helper remains available inside the robot connection dialog for opening the IDE manually.
 
 ## 2026-10-28 — Current repository baseline
 

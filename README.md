@@ -21,7 +21,7 @@ The app is also structured for static hosting. `index.html` is at the repository
 - Console messages, sensor logging, beep, and digital output.
 - Centimeter map with editable obstacles, route preview, and live X/Y coordinates.
 - Generated KIPR C, project JSON import/export, and browser-local autosave.
-- One-click opening of the robot's KISS IDE using its Wi-Fi IP (port 8888).
+- Direct robot run flow: connect to the Wombat, select a KISS C project, save generated code, compile, run, stream console output, and stop.
 - Preserved historical app checkpoints in [`history/iterations/`](history/iterations/).
 
 See [`docs/COMMANDS_AND_HARDWARE.md`](docs/COMMANDS_AND_HARDWARE.md) for port limits and sensor notes, and [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the app's code-generation and preview design.
@@ -42,7 +42,7 @@ The editor autosaves in the current browser's local storage. To move a project t
 
 The app is a static HTML/CSS/JavaScript project. Blockly supplies the visual workspace; custom Wombat blocks map to a small action model and a generator that emits KIPR C using `kipr/wombat.h`. A separate route model estimates supported calibrated driving and pivot motion for the 2D map. Sensor-dependent branches and camera detections generate robot-side C, but remain hardware-only in the map preview because their outcomes require live readings.
 
-No package manager or compile step is needed to open the editor. The **Open KISS IDE** helper opens the official robot-hosted interface; generated C still needs to be copied into KISS, compiled, and run there. This app does not upload, compile, or start programs on the robot directly; see [`docs/ROBOT_CONNECTION.md`](docs/ROBOT_CONNECTION.md).
+No package manager or compile step is needed to open the editor. **Run on robot** uses the Wombat's Voldigate/KISS HTTP routes to save `main.c` into a selected KISS project, compile it, start it, stream output, and request stop. Create a dedicated C project in KISS first. The run flow replaces that project's `src/main.c`; review the confirmation dialog each time. Physical robot connectivity and execution have not yet been verified on hardware; see [`docs/ROBOT_CONNECTION.md`](docs/ROBOT_CONNECTION.md).
 
 ## Development and hardware status
 
