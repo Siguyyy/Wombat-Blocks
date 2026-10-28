@@ -1,3 +1,7 @@
+## 2026-10-28 — Camera close compatibility
+
+- Removed the camera-close action and generated `camera_close()` calls because the Wombat KIPR headers used by this project do not declare that function.
+- Kept camera open, frame update, and object-detection blocks available.
 ## 2026-10-28 — Startup hotfix
 
 - Removed a duplicate top-level JavaScript declaration that stopped the app script from parsing and prevented Blockly and UI controls from initializing.
