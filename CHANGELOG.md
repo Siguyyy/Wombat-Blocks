@@ -1,3 +1,7 @@
+## 2026-10-28 — Startup hotfix
+
+- Removed a duplicate top-level JavaScript declaration that stopped the app script from parsing and prevented Blockly and UI controls from initializing.
+- Confirmed the inline application script parses after the fix.
 ## 2026-10-28 — Claw pose visualization
 
 - Connected the claw jaws to the single arm with a visible hinge mount and crossbar.
