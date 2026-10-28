@@ -2,17 +2,23 @@
 
 ## Current workflow
 
-1. Generate and download `main.c` from Wombat Blocks.
-2. Connect the Chromebook/computer to the Wombat's Wi-Fi.
-3. Open the Wombat's KISS Web IDE at `http://<robot-ip>:8888` (use the IP shown on the controller), create/open a project, paste or import the C program, compile, and run it there.
+1. Connect the Chromebook/computer to the Wombat's Wi-Fi.
+2. In Wombat Blocks, choose **Open KISS IDE**, enter the IP shown on the controller, and open the IDE. The documented default port is `8888`.
+3. In Wombat Blocks, choose **View generated C** and copy or download the full C file.
+4. In the KISS IDE tab, create/open a project, paste or import the C program, compile, and run it there.
 
-The KISS IDE is hosted by the Wombat and is usable from a browser. This project currently generates C but does not communicate with the IDE, upload source, compile, start, stop, or stream robot status.
+The KISS IDE is hosted by the Wombat and is usable from a browser. The helper only opens `http://<robot-ip>:8888`; it does not send code or establish a robot-control connection.
 
 ## Direct Run button feasibility
 
 A direct **Run on robot** workflow is feasible if the robot offers a supported interface for project/source upload, compile status, execution, stop, and output. Merely opening `http://<robot-ip>:8888` is not enough to transfer and execute the generated program. The KIPR material reviewed documents browser access to KISS but does not describe a stable external upload/build/run API.
 
-A safe implementation should first use a documented KISS API if KIPR provides one for the installed firmware. If no supported API exists, the alternatives are to coordinate with KIPR for an interface or build a small local companion service / firmware endpoint. That service would need to validate the robot address, report compile/run failures, allow an explicit stop, and avoid automatically running stale code. Browser-origin, network, authentication, and firmware-version behavior also need to be resolved before designing the connection.
+A review of the KIPR material and public Voldigate IDE source confirmed how the browser IDE is reached and how the simulator executes programs, but did not identify a supported external robot-side API for source upload, compile, run, stop, or status. Voldigate is the simulator IDE, so its internal worker/compile mechanisms are not evidence of a Wombat firmware API. A direct-run implementation should wait for KIPR's documented interface or a known firmware endpoint. Browser-origin, local-network access, authentication, and firmware-version behavior would also need to be resolved.
+
+References:
+- [KIPR Wombat hardware/software page](https://www.kipr.org/kipr/hardware-software) describes the IDE hosted on the Wombat and accessed over Wi-Fi.
+- [KIPR's Writing Your First Program guide](https://www.kipr.org/wp-content/uploads/2025/08/Writing_Your_First_Program.pdf) explains the controller IP and default IDE port `8888`.
+- [KIPR Voldigate source](https://github.com/kipr/voldigate) describes the simulator IDE; it does not establish a robot web API.
 
 ## Safe robot bring-up
 

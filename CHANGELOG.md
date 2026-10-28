@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-28 — KISS IDE launcher
+
+- Added an IP-address helper that opens the Wombat-hosted KISS IDE at port 8888.
+- Clarified in the interface and connection guide that direct upload/compile/run is not available through a documented external API.
+
 ## 2026-10-28 — Current repository baseline
 
 - Rebuilt the editor around Blockly's Zelos renderer and kept the Blockly runtime locally vendored for offline use.
