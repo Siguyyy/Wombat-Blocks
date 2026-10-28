@@ -1,0 +1,10 @@
+* text=auto
+*.html text eol=lf
+*.js text eol=lf
+*.md text eol=lf
+*.c text eol=lf
+*.svg text eol=lf
+*.gif binary
+*.mp3 binary
+*.cur binary
+*.png binary
