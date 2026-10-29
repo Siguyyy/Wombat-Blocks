@@ -1,3 +1,8 @@
+## 2026-10-28 — Position-target drive control
+
+- Made encoder-distance moves and pivots use KIPR MRP relative-position goals by default, with both motor targets issued together and completion monitored independently.
+- Kept PWM with encoder feedback as an alternative and retained direct MAV velocity commands.
+- Migrate saved drive and pivot blocks from the old MAV loop to MRP so existing projects use the new position controller after reload.
 ## 2026-10-28 — Motion controller overshoot fix
 
 - Clamp encoder progress to each wheel target before applying synchronization correction.

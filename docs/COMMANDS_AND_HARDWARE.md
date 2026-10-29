@@ -4,7 +4,7 @@
 
 ### Motion
 
-- Drive forward or backward by encoder-measured centimeters, using MAV (ticks/second) or motor PWM (percent).
+- Drive forward or backward by encoder-measured centimeters, using native MRP relative-position targets by default or motor PWM with encoder feedback.
 - Pivot left/right by degrees, with separate calibration scales.
 - Set a motor directly by MAV or PWM; command relative or absolute encoder positions; wait for a position move; reset an encoder.
 - Stop using `ao()` (all motors off/coast), `freeze(port)` (active brake), or `off(port)` (release a motor).

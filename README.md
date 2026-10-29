@@ -15,7 +15,7 @@ The app is also structured for static hosting. `index.html` is at the repository
 ## Features
 
 - Blockly with the Zelos renderer and a Wombat-themed toolbox.
-- Forward/reverse encoder-distance movement and calibrated left/right pivots, with MAV and PWM choices.
+- Forward/reverse encoder-distance movement and calibrated pivots using native MRP position targets by default, with a PWM encoder-feedback option. Direct motor blocks retain MAV velocity commands.
 - Direct motor/encoder commands, servo controls, configurable arm/claw actions, and stop modes.
 - Digital and analog sensor waits/conditions, bounded sensor loops, start-light waits, and camera object checks.
 - Console messages, sensor logging, beep, and digital output.
