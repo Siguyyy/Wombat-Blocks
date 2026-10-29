@@ -1,3 +1,8 @@
+## 2026-10-28 — Motion controller overshoot fix
+
+- Clamp encoder progress to each wheel target before applying synchronization correction.
+- Compute remaining distance from unfinished wheels only, preventing a completed wheel from producing a negative deceleration fraction and forcing the other wheel to minimum speed.
+- Preserve separate per-wheel targets and the configured left/right motor ports.
 ## 2026-10-28 — Camera close compatibility
 
 - Removed the camera-close action and generated `camera_close()` calls because the Wombat KIPR headers used by this project do not declare that function.
