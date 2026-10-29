@@ -15,7 +15,7 @@ The generator targets the KIPR Wombat API (`mav`, `motor`, encoder counters, `fr
 
 ## Map and preview
 
-The robot starts at `(0, 0)`, faces `+Y`, and uses centimeters. The route estimator walks the supported calibrated distance/pivot and simple arm/claw actions to estimate position, heading, duration, and obstacle collisions. A hardware execution path is separate: analog/digital branches, camera results, and direct motor commands cannot be inferred from the workspace without real sensor feedback, so those actions do not pretend to have a deterministic map path.
+The robot starts at `(0, 0)`, faces `+Y`, and uses centimeters. The preview treats pivots as ideal differential-drive rotations: both wheels travel equal distances in opposite directions, the chassis center stays fixed, and heading changes by exactly the requested angle. Turn calibration affects generated robot C only; preview timing comes from wheel track and requested speed. Pivot collision checks sample more finely for a longer robot or arm. A hardware execution path is separate: analog/digital branches, camera results, and direct motor commands cannot be inferred from the workspace without real sensor feedback, so those actions do not pretend to have a deterministic map path.
 
 ## Persistence
 

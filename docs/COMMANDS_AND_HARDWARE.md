@@ -4,7 +4,7 @@
 
 ### Motion
 
-- Drive forward or backward by encoder-measured centimeters, using native MRP relative-position targets by default or motor PWM with encoder feedback.
+- Drive forward or backward by encoder-measured centimeters using PWM encoder feedback, wheel synchronization, a gradual power ramp, and per-wheel stopping at the requested count.
 - Pivot left/right by degrees, with separate calibration scales.
 - Set a motor directly by MAV or PWM; command relative or absolute encoder positions; wait for a position move; reset an encoder.
 - Stop using `ao()` (all motors off/coast), `freeze(port)` (active brake), or `off(port)` (release a motor).
@@ -53,7 +53,7 @@ An “IR sensor” label alone does not determine the output type or calibration
 
 ## Preview boundary
 
-The 2D preview estimates calibrated distance and pivot blocks. It cannot read physical sensors, camera frames, or arbitrary motor/encoder commands, so it cannot predict sensor branches or those motor paths. The app shows a preview notice when such blocks are present. Generated C runs on the robot and follows the real sensor values.
+The 2D preview uses calibrated distance for straight moves and ideal pivots that turn by the requested angle exactly. Generated automatic-motion C uses PWM encoder feedback; left/right pivot scales adjust generated wheel targets. It cannot read physical sensors, camera frames, or arbitrary motor/encoder commands, so it cannot predict sensor branches or those motor paths. The app shows a preview notice when such blocks are present. Generated C runs on the robot and follows the real sensor values.
 
 ## Scratch categories and the robot mapping
 
