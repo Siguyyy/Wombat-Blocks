@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.12-preview — refresh corrected block labels
+
+- Force Blockly to redraw drive and pivot fields after their direction options are remapped, so the visible block label updates immediately as well as the dropdown selection.
+
 ## v0.1.11-preview — direction correction and robot API diagnostics
 
 - Add saved, off-by-default setup toggles for reversed pivot and forward/backward response.
