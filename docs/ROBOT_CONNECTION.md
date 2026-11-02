@@ -12,6 +12,7 @@ Wombat Blocks can use the Wombat's Voldigate HTTP service to send generated C to
 
 1. In Wombat Blocks, select **Run on robot**.
 2. Enter the Wombat's Wi-Fi IP address from its controller screen and select **Connect**.
+   - If the IDE opens but Connect fails, select **Check API route**. It opens the read-only `GET /get-users` response directly so you can see whether the Wombat API returned data or an HTTP error.
 3. Select the KISS user and the dedicated C project.
 4. Select **Compile & run** and confirm the dialog. The app replaces that project's `src/main.c`, compiles it on the Wombat, and starts the resulting program.
 5. Watch the output in the dialog. Select **Stop robot** to call the Wombat stop route.

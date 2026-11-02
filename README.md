@@ -20,6 +20,7 @@ The app is also structured for static hosting. `index.html` is at the repository
 - Digital and analog sensor waits/conditions, bounded sensor loops, start-light waits, and camera object checks.
 - Console messages, sensor logging, beep, and digital output.
 - Centimeter map with editable obstacles, route preview, and live X/Y coordinates.
+- Optional saved direction corrections for robots whose forward/backward or left/right response is reversed; block labels and the preview stay aligned while existing stored commands are preserved.
 - Generated KIPR C, project JSON import/export, and browser-local autosave.
 - Direct robot run flow: connect to the Wombat, select a KISS C project, save generated code, compile, run, stream console output, and stop.
 - Preserved historical app checkpoints in [`history/iterations/`](history/iterations/).

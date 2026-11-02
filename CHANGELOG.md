@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.1.11-preview — direction correction and robot API diagnostics
+
+- Add saved, off-by-default setup toggles for reversed pivot and forward/backward response.
+- Update existing block labels and dropdown choices without changing their stored direction values or generated motor commands.
+- Apply the correction to the map preview so it matches the displayed direction.
+- Include API URL, elapsed time, HTTP status/response diagnostics and a read-only **Check API route** button for `/get-users`.
+
+## v0.1.10-preview — robot API connection diagnostics
+
+- Show the exact API URL, elapsed time, and HTTP status or response body when connection fails.
+- Add a read-only **Check API route** button that opens `/get-users` directly, separating endpoint reachability from browser cross-origin failures.
+
 ## v0.1.8-preview — potential simulator build (2026-10-28)
 
 - Use closed-loop PWM encoder feedback for automatic distance moves and pivots, avoiding native MRP completion state between consecutive blocks.
