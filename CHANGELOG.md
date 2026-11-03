@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.14-preview — optional gyro-corrected pivots
+
+- Add optional Wombat gyro feedback for pivots to stop at measured rotation instead of relying only on wheel-distance estimates.
+- Add selectable X/Y/Z gyro axes, estimate sensor bias while motors are stopped at program startup, and report measured pivot angles or timeout diagnostics.
+- Keep gyro correction off by default; MRP and PWM methods remain selectable.
+
 ## v0.1.13-preview — restore position-controlled motion mode
 
 - Make the automatic drive and pivot method dropdowns select distinct generated C controllers: MRP relative-position control or PWM encoder feedback.
