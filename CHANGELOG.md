@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.1.13-preview — restore position-controlled motion mode
+
+- Make the automatic drive and pivot method dropdowns select distinct generated C controllers: MRP relative-position control or PWM encoder feedback.
+- Use calibrated ticks-per-second commands for MRP and wait for both wheel targets before braking, avoiding premature one-wheel stops that can add unintended yaw.
+- Print target and encoder progress when either controller times out.
+
 ## v0.1.12-preview — refresh corrected block labels
 
 - Force Blockly to redraw drive and pivot fields after their direction options are remapped, so the visible block label updates immediately as well as the dropdown selection.
