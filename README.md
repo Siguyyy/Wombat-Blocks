@@ -1,5 +1,7 @@
 # Wombat Blocks
 
+**Newest build: 0.1.15 preview**
+
 **A Blockly-based visual programming workspace for the KIPR Wombat robot.** Build a block program, estimate its route on a centimeter map, and generate KIPR C source for the Wombat's KISS Web IDE.
 
 > **Robot safety:** The map is an estimate, not a live robot simulator. Calibrate wheel size, encoder scale, motor directions, track width, servo endpoints, and sensor thresholds on the assembled robot. Test new motion code with the wheels lifted first. Sensor branches, camera detections, and direct motor commands cannot be predicted by the map preview.
@@ -16,12 +18,11 @@ The app is also structured for static hosting. `index.html` is at the repository
 
 - Blockly with the Zelos renderer and a Wombat-themed toolbox.
 - Forward/reverse encoder-distance movement and calibrated pivots support native MRP relative-position control or PWM with encoder feedback. Direct motor blocks retain MAV/PWM commands.
-- Direct motor/encoder commands, servo controls, configurable arm/claw actions, and stop modes.
+- Direct motor/encoder commands, arm/claw actions, and custom servo positioning with 1–100% paced movement speed.
 - Digital and analog sensor waits/conditions, bounded sensor loops, start-light waits, and camera object checks.
 - Console messages, sensor logging, beep, and digital output.
 - Centimeter map with editable obstacles, route preview, and live X/Y coordinates.
 - Optional saved direction corrections for robots whose forward/backward or left/right response is reversed; block labels and the preview stay aligned while existing stored commands are preserved.
-- Optional Wombat gyro feedback for physical pivots, with selectable sensor axis and startup bias calibration.
 - Generated KIPR C, project JSON import/export, and browser-local autosave.
 - Direct robot run flow: connect to the Wombat, select a KISS C project, save generated code, compile, run, stream console output, and stop.
 - Preserved historical app checkpoints in [`history/iterations/`](history/iterations/).
