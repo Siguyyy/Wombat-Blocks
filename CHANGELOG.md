@@ -1,6 +1,10 @@
 # Changelog
 
-## v0.1.15-preview — newest build: servo speed control
+## v0.1.16-preview — newest build: generated C string fix
+
+- Escape timeout diagnostic newlines correctly in the generated C source so timeout `printf` statements remain on one valid C line.
+
+## v0.1.15-preview — servo speed control
 
 - Base this build on the v0.1.13 encoder motion and direction-toggle code.
 - Add 1–100% speed fields to arm, claw, and custom servo blocks. Generated C moves servo targets in paced increments, and the preview duration follows the selected percentage.

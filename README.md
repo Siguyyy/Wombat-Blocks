@@ -1,6 +1,6 @@
 # Wombat Blocks
 
-**Newest build: 0.1.15 preview**
+**Newest build: 0.1.16 preview**
 
 **A Blockly-based visual programming workspace for the KIPR Wombat robot.** Build a block program, estimate its route on a centimeter map, and generate KIPR C source for the Wombat's KISS Web IDE.
 
