@@ -7,11 +7,11 @@ Wombat Blocks is intentionally a small static app: `index.html` contains the lay
 ## Blockly to KIPR C
 
 1. The toolbox registers Wombat-specific blocks for the controller's motors, servos, sensors, camera, and output.
-2. `getActions()` reads the connected statement stacks into a small internal action tree, including nested branch/loop bodies.
+2. `getActions()` reads connected statement stacks and value expressions into an internal action tree, including nested branches and timed loops.
 3. `actionC()` turns that tree into KIPR C statements. `generateC()` wraps the statements with `kipr/wombat.h`, calibration constants, motion helpers, sensor helpers, cleanup, and `main()`.
 4. The full-file and block-only views display that same generated output; project JSON serializes Blockly state, settings, and map obstacles.
 
-The generator targets the KIPR Wombat API (`mav`, `motor`, encoder counters, `freeze`, servo calls, analog/digital input, camera, wait, and console helpers). It is not a general Scratch-to-C compiler. New blocks need a Blockly definition, toolbox entry, parser/model support, and generated C behavior.
+The generator targets the KIPR Wombat API (`mav`, `motor`, encoder counters, `freeze`, servo calls, analog/digital input, camera, wait, and console helpers). Its Operators category currently supports number values, analog/digital readings, comparisons, boolean combinations, and basic arithmetic. Loop blocks use finite timeouts so a missed sensor event cannot leave an autonomous program running indefinitely.
 
 ## Map and preview
 

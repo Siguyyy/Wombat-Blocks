@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.1.17-preview — sensor logic and convenience blocks
+
+- Add analog/digital value reporters and Scratch-style comparison, AND/OR/NOT, arithmetic, modulo, division, and power operators.
+- Add generic if, while, do-while, repeat-until, and wait-until blocks with finite timeout handling; sensor repeat-until blocks now run their body at least once.
+- Add automatic drive-until analog-threshold and digital-switch blocks that stop the drive motors and fail safely on timeout.
+- Add a camera wait block that updates frames until a configured channel detects an object or times out.
+- Mark live sensor/control flows as hardware-only in preview; analog thresholds remain raw readings until the specific sensor is calibrated.
+
+
 ## v0.1.16-preview — newest build: generated C string fix
 
 - Escape timeout diagnostic newlines correctly in the generated C source so timeout `printf` statements remain on one valid C line.

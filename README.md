@@ -1,6 +1,6 @@
 # Wombat Blocks
 
-**Newest build: 0.1.16 preview**
+**Newest build: 0.1.17 preview**
 
 **A Blockly-based visual programming workspace for the KIPR Wombat robot.** Build a block program, estimate its route on a centimeter map, and generate KIPR C source for the Wombat's KISS Web IDE.
 
@@ -19,11 +19,11 @@ The app is also structured for static hosting. `index.html` is at the repository
 - Blockly with the Zelos renderer and a Wombat-themed toolbox.
 - Forward/reverse encoder-distance movement and calibrated pivots support native MRP relative-position control or PWM with encoder feedback. Direct motor blocks retain MAV/PWM commands.
 - Direct motor/encoder commands, arm/claw actions, and custom servo positioning with 1–100% paced movement speed.
-- Digital and analog sensor waits/conditions, bounded sensor loops, start-light waits, and camera object checks.
+- Analog/digital reporters and conditions, comparison/boolean/math operators, timed while/do-while/repeat-until loops, and camera waits. Drive-until analog threshold and digital switch blocks stop automatically and have timeouts.
 - Console messages, sensor logging, beep, and digital output.
 - Centimeter map with editable obstacles, route preview, and live X/Y coordinates.
 - Optional saved direction corrections for robots whose forward/backward or left/right response is reversed; block labels and the preview stay aligned while existing stored commands are preserved.
-- Generated KIPR C, project JSON import/export, and browser-local autosave.
+- Generated KIPR C, project JSON import/export, and browser-local autosave. See [sensor and control block guide](docs/SENSOR_BLOCKS.md) for threshold calibration, timed loops, and line-following composition.
 - Direct robot run flow: connect to the Wombat, select a KISS C project, save generated code, compile, run, stream console output, and stop.
 - Preserved historical app checkpoints in [`history/iterations/`](history/iterations/).
 
