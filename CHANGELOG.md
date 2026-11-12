@@ -1,4 +1,10 @@
 # Changelog
+## v0.1.18-preview — restore 1.12 encoder movement
+
+- Drive and pivot blocks use the v0.1.12 closed-loop encoder controller again: percentage-power motor commands, per-wheel encoder targets, and the original gradual speed ramp.
+- Removed the misleading per-block movement method dropdown. Existing saved drive and pivot blocks discard the old method field safely.
+- Direct single-motor position blocks still use `mrp()` / `mtp()` as selected.
+
 
 ## v0.1.17-preview — sensor logic and convenience blocks
 
