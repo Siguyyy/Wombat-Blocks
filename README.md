@@ -1,56 +1,54 @@
-# Wombat Blocks
+# Wombat Blocks — Visual Programming for KIPR Wombat
 
-**Newest build: 0.1.20 preview**
+A Blockly editor for building programs for the KIPR Wombat robot. Combine drive, pivot, motor, servo, sensor, and control blocks; preview supported motion on a centimeter map; and export C code for the Wombat KISS IDE.
 
-**A Blockly-based visual programming workspace for the KIPR Wombat robot.** Build a block program, estimate its route on a centimeter map, and generate KIPR C source for the Wombat's KISS Web IDE.
+**Latest preview: [v0.1.20](https://github.com/Siguyyy/Wombat-Blocks/releases/tag/v0.1.20-preview)** · [Browse all releases](https://github.com/Siguyyy/Wombat-Blocks/releases) · [View source](https://github.com/Siguyyy/Wombat-Blocks)
 
-> **Robot safety:** The map is an estimate, not a live robot simulator. Calibrate wheel size, encoder scale, motor directions, track width, servo endpoints, and sensor thresholds on the assembled robot. Test new motion code with the wheels lifted first. Sensor branches, camera detections, and direct motor commands cannot be predicted by the map preview.
+> **Robot safety:** The map is an estimate, not a live robot simulator. Test new motion code with the wheels lifted first. Calibrate the assembled robot. Encoder control cannot compensate for wheel slip, changing surfaces, or every motor difference. Sensor branches, camera results, and direct motor commands require hardware and cannot be predicted by the map preview.
 
-## Open the editor
+---
 
-1. Download this repository as a ZIP and extract it, or clone it with Git.
+## ✨ What it does
+
+- **Build with blocks:** calibrated distance moves and pivots, independent left/right wheel-speed moves, motors, servos, waits, loops, conditionals, operators, and sensor actions.
+- **Trace a return route:** mark a point to reset drive encoders, then retrace supported drive and pivot blocks in reverse order. Freeform motor or sensor-driven movement after the mark stops retracing safely. This is encoder-based replay, not a gyro or a guarantee against wheel slip.
+- **Use sensors:** read analog and digital inputs, wait for thresholds or switches, drive until a sensor condition, and work with configured camera channels.
+- **Preview supported paths:** place obstacles on a centimeter map and inspect the estimated robot route and coordinates.
+- **Export and run:** view or download generated KIPR C. The optional robot connection can save, compile, and run it through the Wombat KISS API.
+
+## 🚀 Get started
+
+### Run locally
+
+1. [Download the latest preview](https://github.com/Siguyyy/Wombat-Blocks/releases/tag/v0.1.20-preview) and extract the ZIP.
 2. Open `index.html` in Chrome, Edge, or Firefox. Keep the `blockly/` folder beside it.
-3. Blockly is included locally, so the editor itself does not rely on a CDN or a build step.
+3. Connect blocks to **when program starts**, then choose **View generated C** to inspect or download `main.c`.
 
-The app is also structured for static hosting. `index.html` is at the repository root; GitHub Pages or another host must be enabled separately in its settings.
+Blockly is bundled with the project; no package manager, build step, or external CDN is required to open the editor.
 
-## Features
+### Run on a Wombat
 
-- Blockly with the Zelos renderer and a Wombat-themed toolbox.
-- Forward/reverse encoder-distance movement and calibrated pivots use the v0.1.12 preview closed-loop encoder controller; a separate distance block exposes independent left/right MAV speed percentages for wheel trim. Mark/retrace blocks reset encoders and reverse recorded calibrated drive/pivot steps. Direct motor-position blocks retain MRP/MTP commands; direct motor blocks retain MAV/PWM commands.
-- Direct motor/encoder commands, arm/claw actions, and custom servo positioning with 1–100% paced movement speed.
-- Analog/digital reporters and conditions, comparison/boolean/math operators, timed while/do-while/repeat-until loops, and camera waits. Drive-until analog threshold and digital switch blocks stop automatically and have timeouts.
-- Console messages, sensor logging, beep, and digital output.
-- Centimeter map with editable obstacles, route preview, and live X/Y coordinates.
-- Optional saved direction corrections for robots whose forward/backward or left/right response is reversed; block labels and the preview stay aligned while existing stored commands are preserved.
-- Generated KIPR C, project JSON import/export, and browser-local autosave. See [sensor and control block guide](docs/SENSOR_BLOCKS.md) for threshold calibration, timed loops, and line-following composition.
-- Direct robot run flow: connect to the Wombat, select a KISS C project, save generated code, compile, run, stream console output, and stop.
-- Preserved historical app checkpoints in [`history/iterations/`](history/iterations/).
+Create a dedicated C project in KISS first. **Run on robot** writes the generated code to that project's `src/main.c`, compiles it, and starts the physical robot. Review the overwrite prompt and supervise the robot during operation. See [robot connection notes](docs/ROBOT_CONNECTION.md).
 
-See [`docs/COMMANDS_AND_HARDWARE.md`](docs/COMMANDS_AND_HARDWARE.md) for port limits and sensor notes, and [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the app's code-generation and preview design.
+## 🧰 Setup and calibration
 
-## Project files
+Set the drive motor ports and forward signs in **Robot setup** to match your wiring. Measure wheel diameter and track, then tune distance and turn scales with short, supervised runs. The independent wheel-speed block can compensate for a consistent straight-line bias by adjusting one side's percentage.
 
-- `index.html` — current application: UI, Blockly blocks, C generator, map, preview, settings, and project persistence.
-- `blockly/` — local Blockly scripts, English messages, media, and Blockly's Apache 2.0 license.
-- `docs/` — hardware, architecture, and robot-connection notes.
-- `history/iterations/` — dated pre-change snapshots available from the development workspace.
-- `history/legacy/` — earlier standalone C sample, retained as a historical reference.
+Analog readings are raw sensor values, not distances until calibrated for the specific sensor. Review [sensor and control blocks](docs/SENSOR_BLOCKS.md), [commands and hardware](docs/COMMANDS_AND_HARDWARE.md), and [architecture notes](docs/ARCHITECTURE.md) before using advanced blocks.
 
-## Save and move projects
+## 📦 Project contents
 
-The editor autosaves in the current browser's local storage. To move a project to another browser/device, use **File → Save project (.json)** and then **File → Load project (.json)** there. Use **File → Download main.c** to export the generated robot program.
+- `index.html` — editor, Blockly definitions, map preview, project storage, and C generator.
+- `blockly/` — locally bundled Blockly runtime, English messages, media, and its license.
+- `docs/` — hardware limits, sensor/control guidance, architecture, and robot connection notes.
+- `history/` — selected historical app checkpoints and a legacy C sample.
 
-## How it was built
+Projects autosave in the current browser. Use **File → Save project (.json)** to move a workspace between browsers. The generated program is C for `kipr/wombat.h`.
 
-The app is a static HTML/CSS/JavaScript project. Blockly supplies the visual workspace; custom Wombat blocks map to a small action model and a generator that emits KIPR C using `kipr/wombat.h`. A separate route model estimates supported calibrated driving and pivot motion for the 2D map. Sensor-dependent branches and camera detections generate robot-side C, but remain hardware-only in the map preview because their outcomes require live readings.
+## ⚠️ Current status and limitations
 
-No package manager or compile step is needed to open the editor. **Run on robot** uses the Wombat's Voldigate/KISS HTTP routes to save `main.c` into a selected KISS project, compile it, start it, stream output, and request stop. Create a dedicated C project in KISS first. The run flow replaces that project's `src/main.c`; review the confirmation dialog each time. Physical robot connectivity and execution have not yet been verified on hardware; see [`docs/ROBOT_CONNECTION.md`](docs/ROBOT_CONNECTION.md).
+This is an evolving preview project. Generated C has not been validated on every Wombat firmware or robot configuration. Supported map motion is deterministic; live sensor readings, camera detections, and direct motor outputs are not. Retrace replays supported encoder-based moves and may not return to the exact physical starting point if the robot slips or is obstructed.
 
-## Development and hardware status
+## 📄 License
 
-This is an evolving educational robotics project. The generated code has not been validated against every firmware and sensor configuration. Real movement depends on the assembled robot's motors, wiring, battery, surface, sensor placement, and calibration. The 2020 build guide's sensor builds are examples and do not confirm which parts are installed on a particular robot.
-
-## License and third-party code
-
-No project-level license has been selected. Until one is added, the Wombat Blocks app remains under its author's copyright; repository visibility does not grant reuse rights. Blockly's bundled library files are separately distributed under Apache License 2.0; see [`blockly/LICENSE`](blockly/LICENSE). Other acknowledgements are in [`NOTICE.md`](NOTICE.md).
+No project-level license has been selected, so the repository's source remains under its author's copyright. Blockly's bundled files are separately distributed under Apache License 2.0; see [`blockly/LICENSE`](blockly/LICENSE) and [`NOTICE.md`](NOTICE.md).
