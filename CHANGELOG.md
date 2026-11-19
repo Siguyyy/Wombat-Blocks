@@ -1,4 +1,15 @@
 # Changelog
+## v0.1.20-preview - encoder return point and retrace
+
+- Added blocks to mark a return point (resetting both drive encoders) and retrace recorded drive/pivot moves in reverse order.
+- Retrace supports calibrated drive, wheel-speed drive, and pivot blocks, including movements executed inside loops and branches.
+- Freeform motor and sensor-triggered drive commands invalidate the trace; return stops safely rather than guessing how to reverse them.
+
+## v0.1.19-preview — independent wheel speed distance block
+
+- Added a separate forward/reverse distance block with individual left and right MAV speed percentages.
+- The new block tracks each wheel’s encoder target independently and the map preview models the resulting differential drive path.
+
 ## v0.1.18-preview — restore 1.12 encoder movement
 
 - Drive and pivot blocks use the v0.1.12 closed-loop encoder controller again: percentage-power motor commands, per-wheel encoder targets, and the original gradual speed ramp.
