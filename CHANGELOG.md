@@ -1,4 +1,10 @@
 # Changelog
+## v0.1.24-preview — retrace direct MAV wheel segments
+
+- Fix return-point retracing when a program uses direct MAV commands on the configured drive ports. The generator records encoder deltas and reverses that measured segment when a stop block closes it.
+- Preserve existing drive/pivot replay and safely invalidate traces for unsupported direct PWM, motor-position, and sensor-triggered movement.
+- Keep the 0.1.23 drive and pivot controller unchanged; no pivot calibration or behavior was altered in this build.
+
 ## v0.1.23-preview — keyboard compile fallback and project compatibility
 
 - Compile the keyboard-drive block as an explicit no-op with a simulator message under WebAssembly, where KIPR Graphics input is unavailable; include the KIPR graphics header only for native KISS builds.

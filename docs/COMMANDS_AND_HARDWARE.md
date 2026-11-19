@@ -10,6 +10,8 @@
 - Optional keyboard drive reads WASD/arrows, Space to stop, and Q to exit in native KISS Graphics. The browser simulator compiles it as a no-op.
 - Stop using `ao()` (all motors off/coast), `freeze(port)` (active brake), or `off(port)` (release a motor).
 
+Return-point retracing records calibrated drive/pivot helpers. In v0.1.24 it also records direct MAV output on configured drive ports when a stop block closes the segment; direct PWM and motor-position actions remain unsupported by the reversible trace.
+
 ### Servos
 
 - Enable or disable servo power.
