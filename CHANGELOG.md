@@ -1,4 +1,22 @@
 # Changelog
+## v0.1.23-preview — keyboard compile fallback and project compatibility
+
+- Compile the keyboard-drive block as an explicit no-op with a simulator message under WebAssembly, where KIPR Graphics input is unavailable; include the KIPR graphics header only for native KISS builds.
+- Replace the generated keyboard block's inline key-speed variable with a shared helper, avoiding malformed C identifiers/declarations.
+- When loading v0.1.21 waypoint projects, convert removed waypoint blocks to explanatory comments so projects still open without running unreliable estimated-pose navigation.
+- Confirm the attached v0.1.18 build has no MAV selector on its normal distance-move block; MAV remains available in direct motor control and the newer independent-wheel distance block.
+
+## v0.1.22-preview — local feature and interface refresh
+
+- Remove the unreliable estimated-position waypoint experiment; retain the separate command-history return trace.
+- Add Blockly variables and numeric reporters for elapsed timers and motor encoder counts.
+- Add stable analog/digital waits, analog min/max/average sampling, and numeric console logging.
+- Add an optional KISS Graphics keyboard-drive block using WASD/arrows, Space to brake, and Q to exit. It does not provide a browser-to-robot remote link.
+- Add bounded timeouts and clearer browser/network diagnostics to Run on robot; bound the run-output stream handshake and report unknown robot state clearly.
+- Refresh buttons, fields, panels, and spacing with a restrained slate/violet style.
+- The v0.1.21 waypoint preview was withdrawn because encoder-only pose estimates drifted and produced inconsistent return paths.
+
+
 ## v0.1.20-preview - encoder return point and retrace
 
 - Added blocks to mark a return point (resetting both drive encoders) and retrace recorded drive/pivot moves in reverse order.

@@ -48,3 +48,9 @@ The source has a permissive CORS middleware for these later routes, so a browser
 - [KIPR Wombat hardware/software page](https://www.kipr.org/kipr/hardware-software) describes the IDE hosted on the Wombat and accessed over Wi-Fi.
 - [KIPR's Writing Your First Program guide](https://www.kipr.org/wp-content/uploads/2025/08/Writing_Your_First_Program.pdf) explains the controller IP and default IDE port `8888`.
 
+
+## Current connection behavior
+
+The browser now ends API requests after 12 seconds and reports whether it timed out, received an HTTP error, or could not read a cross-origin/local-network response. A run-output stream that never opens is reported after 10 seconds. That timeout cannot prove the robot stopped: the start request may have been accepted before the browser lost the stream, so use the controller's stop controls if the state is uncertain. These changes improve diagnostics but do not bypass browser network permissions, CORS, or firmware route differences.
+
+Keyboard drive is a generated-code option, not a remote-control connection from this web page. It polls KIPR Graphics keyboard state while the program runs; the KISS Graphics window must be open and receive the keys. The web simulator compiles this block as a no-op because its WebAssembly build lacks graphics input support; on the robot, use a native KISS build with a focused Graphics window. See the KIPR [graphics input documentation](https://www.kipr.org/doc/group__graphics.html).

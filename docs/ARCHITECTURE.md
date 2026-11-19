@@ -11,7 +11,7 @@ Wombat Blocks is intentionally a small static app: `index.html` contains the lay
 3. `actionC()` turns that tree into KIPR C statements. `generateC()` wraps the statements with `kipr/wombat.h`, calibration constants, motion helpers, sensor helpers, cleanup, and `main()`.
 4. The full-file and block-only views display that same generated output; project JSON serializes Blockly state, settings, and map obstacles.
 
-The generator targets the KIPR Wombat API (`mav`, `motor`, encoder counters, `freeze`, servo calls, analog/digital input, camera, wait, and console helpers). The wheel-trim distance block sends independent MAV speed setpoints to each drive motor while monitoring each encoder target. Return-point blocks reset both encoders and keep a bounded runtime stack of calibrated drive/pivot commands for reverse-order replay; unsupported direct motor actions invalidate the trace. Its Operators category currently supports number values, analog/digital readings, comparisons, boolean combinations, and basic arithmetic. Loop blocks use finite timeouts so a missed sensor event cannot leave an autonomous program running indefinitely.
+The generator targets the KIPR Wombat API (`mav`, `motor`, encoder counters, `freeze`, servo calls, analog/digital input, camera, wait, and console helpers). The wheel-trim distance block sends independent MAV speed setpoints to each drive motor while monitoring each encoder target. Return-point blocks reset both encoders and keep a bounded runtime stack of calibrated drive/pivot commands for reverse-order replay; unsupported direct motor actions invalidate the trace. Its Operators category currently supports variables, number values, analog/digital/encoder readings, elapsed timers, comparisons, boolean combinations, and basic arithmetic. Diagnostics can print expressions or analog samples, and stable sensor waits filter brief state changes. Loop blocks use finite timeouts so a missed sensor event cannot leave an autonomous program running indefinitely.
 
 ## Map and preview
 
@@ -22,9 +22,13 @@ Servo position commands can be paced by issuing intermediate targets every 10 ms
 ## Persistence
 
 - Browser autosave: local storage on that browser/device.
-- Portable project: JSON file containing blocks, robot calibration/settings, and map obstacles.
+- Portable project: JSON file containing blocks, robot calibration/settings, and map obstacles. Older project formats are migrated; removed experimental waypoint blocks become comments instead of being executed.
 - Robot source: downloadable generated `main.c` for the KISS Web IDE.
 
 ## Extending the app safely
 
 When adding a block, keep the visual block, parser, generated C, hardware port limits, help text, and preview behavior aligned. For sensor branches, use bounded waits/loops and make the map preview limitations visible. Keep calibration values editable and avoid claiming a sensor or mechanism is installed unless the user's wiring confirms it.
+
+## Route tracing
+
+The optional return marker records encoder-based drive and pivot helper calls in order. Retrace replays those recorded steps in reverse with opposite directions. Direct motor, sensor-driven, and other unmodeled motion are not included; the helper fails safely if its trace buffer overflows or its record becomes invalid. This is command history rather than robot localization, and wheel slip can still affect the physical return.

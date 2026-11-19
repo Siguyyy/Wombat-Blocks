@@ -2,7 +2,7 @@
 
 A Blockly editor for building programs for the KIPR Wombat robot. Combine drive, pivot, motor, servo, sensor, and control blocks; preview supported motion on a centimeter map; and export C code for the Wombat KISS IDE.
 
-**Latest preview: [v0.1.20](https://github.com/Siguyyy/Wombat-Blocks/releases/tag/v0.1.20-preview)** · [Browse all releases](https://github.com/Siguyyy/Wombat-Blocks/releases) · [View source](https://github.com/Siguyyy/Wombat-Blocks)
+**Latest preview: [v0.1.23](https://github.com/Siguyyy/Wombat-Blocks/releases/tag/v0.1.23-preview)** · [Browse all releases](https://github.com/Siguyyy/Wombat-Blocks/releases) · [View source](https://github.com/Siguyyy/Wombat-Blocks)
 
 > **Robot safety:** The map is an estimate, not a live robot simulator. Test new motion code with the wheels lifted first. Calibrate the assembled robot. Encoder control cannot compensate for wheel slip, changing surfaces, or every motor difference. Sensor branches, camera results, and direct motor commands require hardware and cannot be predicted by the map preview.
 
@@ -11,16 +11,17 @@ A Blockly editor for building programs for the KIPR Wombat robot. Combine drive,
 ## ✨ What it does
 
 - **Build with blocks:** calibrated distance moves and pivots, independent left/right wheel-speed moves, motors, servos, waits, loops, conditionals, operators, and sensor actions.
-- **Trace a return route:** mark a point to reset drive encoders, then retrace supported drive and pivot blocks in reverse order. Freeform motor or sensor-driven movement after the mark stops retracing safely. This is encoder-based replay, not a gyro or a guarantee against wheel slip.
-- **Use sensors:** read analog and digital inputs, wait for thresholds or switches, drive until a sensor condition, and work with configured camera channels.
+- **Trace and retrace a route:** mark a return point, record supported encoder-based drive and pivot blocks, then retrace those steps in reverse.
+- **Keep projects:** JSON projects from earlier builds retain their normal blocks and settings. The withdrawn waypoint experiment imports as explanatory comments because its estimated-position navigation was unreliable.
+- **Use sensors and diagnostics:** read analog/digital inputs and encoders, wait for stable sensor states, sample analog readings, and print values to the KISS console.
 - **Preview supported paths:** place obstacles on a centimeter map and inspect the estimated robot route and coordinates.
-- **Export and run:** view or download generated KIPR C. The optional robot connection can save, compile, and run it through the Wombat KISS API.
+- **Export and run:** view or download generated KIPR C. The optional robot connection can save, compile, and run it through the Wombat KISS API; keyboard drive is generated code and requires KISS Graphics keyboard input (the web simulator skips it). Variables, timers, stable sensor waits, and diagnostics are included.
 
 ## 🚀 Get started
 
 ### Run locally
 
-1. [Download the latest preview](https://github.com/Siguyyy/Wombat-Blocks/releases/tag/v0.1.20-preview) and extract the ZIP.
+1. [Download the latest preview](https://github.com/Siguyyy/Wombat-Blocks/releases/tag/v0.1.23-preview) and extract the ZIP.
 2. Open `index.html` in Chrome, Edge, or Firefox. Keep the `blockly/` folder beside it.
 3. Connect blocks to **when program starts**, then choose **View generated C** to inspect or download `main.c`.
 
@@ -32,7 +33,7 @@ Create a dedicated C project in KISS first. **Run on robot** writes the generate
 
 ## 🧰 Setup and calibration
 
-Set the drive motor ports and forward signs in **Robot setup** to match your wiring. Measure wheel diameter and track, then tune distance and turn scales with short, supervised runs. The independent wheel-speed block can compensate for a consistent straight-line bias by adjusting one side's percentage.
+Set the drive motor ports and forward signs in **Robot setup** to match your wiring. Measure wheel diameter and track, then tune distance and turn scales with short, supervised runs. The independent wheel-speed block can compensate for a consistent straight-line bias by adjusting one side's percentage. New tools include variables, elapsed timers, stable sensor waits, encoder and analog diagnostics, and an optional keyboard-drive block. Route retracing records calibrated drive/pivot blocks. Direct motor commands and sensor-triggered movement are not treated as reversible route steps.
 
 Analog readings are raw sensor values, not distances until calibrated for the specific sensor. Review [sensor and control blocks](docs/SENSOR_BLOCKS.md), [commands and hardware](docs/COMMANDS_AND_HARDWARE.md), and [architecture notes](docs/ARCHITECTURE.md) before using advanced blocks.
 

@@ -6,7 +6,8 @@
 
 - Drive forward or backward by encoder-measured centimeters using PWM encoder feedback, wheel synchronization, a gradual power ramp, and per-wheel stopping at the requested count.
 - Pivot left/right by degrees, with separate calibration scales.
-- Set a motor directly by MAV or PWM; command relative or absolute encoder positions; wait for a position move; reset an encoder.
+- Move a measured distance with encoder feedback; the separate left/right distance block uses independent MAV speeds. Set a motor directly by MAV or PWM; command relative or absolute encoder positions; wait for a position move; reset an encoder.
+- Optional keyboard drive reads WASD/arrows, Space to stop, and Q to exit in native KISS Graphics. The browser simulator compiles it as a no-op.
 - Stop using `ao()` (all motors off/coast), `freeze(port)` (active brake), or `off(port)` (release a motor).
 
 ### Servos
@@ -17,10 +18,10 @@
 
 ### Control and sensors
 
-- Wait, repeat a fixed count, or repeat until a digital state or analog threshold is reached.
+- Wait, repeat a fixed count, use variables and elapsed timers, or repeat until a digital state or analog threshold is reached.
 - Digital/analog conditions have then/else stacks. Sensor loops include a maximum duration and route failures to cleanup instead of running forever.
 - Wait for digital input, wait for an analog threshold, or wait for the start light.
-- Read sensor values to the robot program console for threshold calibration.
+- Wait for analog/digital states to stay stable; sample analog minimum/maximum/average; inspect encoder values; print values to the robot program console.
 - Open/update/close the camera and branch if a configured camera channel detects an object.
 
 ### Output
@@ -57,4 +58,4 @@ The 2D preview uses calibrated distance for straight moves and ideal pivots that
 
 ## Scratch categories and the robot mapping
 
-Scratch's core palette includes Motion, Looks, Sound, Events, Control, Sensing, Operators, Variables, and My Blocks. Wombat Blocks carries over the hardware-relevant concepts as Motion, Servos, Sensors, Control, and Output. The start block represents the program-start event; beep and console output provide basic feedback. Sprite costumes, backdrops, keyboard/mouse input, clones, and broadcasts do not correspond directly to the physical Wombat. General-purpose variables, reusable procedures, and more typed math/logic are potential future additions once their C generation and simulation behavior are defined.
+Scratch's core palette includes Motion, Looks, Sound, Events, Control, Sensing, Operators, Variables, and My Blocks. Wombat Blocks carries over the hardware-relevant concepts as Motion, Servos, Sensors, Control, and Output. The start block represents the program-start event; beep and console output provide basic feedback. Sprite costumes, backdrops, keyboard/mouse input, clones, and broadcasts do not correspond directly to the physical Wombat. General-purpose variables and typed math/logic generate C. Reusable procedures remain a possible future addition. Keyboard input here means KISS Graphics input; it does not send browser keys over Wi-Fi.
