@@ -1,6 +1,6 @@
 # Wombat Blocks
 
-**Newest build: 0.1.18 preview**
+**Newest build: 0.1.19 preview**
 
 **A Blockly-based visual programming workspace for the KIPR Wombat robot.** Build a block program, estimate its route on a centimeter map, and generate KIPR C source for the Wombat's KISS Web IDE.
 
@@ -17,7 +17,7 @@ The app is also structured for static hosting. `index.html` is at the repository
 ## Features
 
 - Blockly with the Zelos renderer and a Wombat-themed toolbox.
-- Forward/reverse encoder-distance movement and calibrated pivots use the v0.1.12 preview closed-loop encoder controller. Direct motor-position blocks retain MRP/MTP commands; direct motor blocks retain MAV/PWM commands.
+- Forward/reverse encoder-distance movement and calibrated pivots use the v0.1.12 preview closed-loop encoder controller; a separate distance block exposes independent left/right MAV speed percentages for wheel trim. Direct motor-position blocks retain MRP/MTP commands; direct motor blocks retain MAV/PWM commands.
 - Direct motor/encoder commands, arm/claw actions, and custom servo positioning with 1–100% paced movement speed.
 - Analog/digital reporters and conditions, comparison/boolean/math operators, timed while/do-while/repeat-until loops, and camera waits. Drive-until analog threshold and digital switch blocks stop automatically and have timeouts.
 - Console messages, sensor logging, beep, and digital output.
