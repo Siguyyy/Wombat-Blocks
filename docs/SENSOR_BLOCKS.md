@@ -10,9 +10,22 @@ Wombat Blocks reads analog ports 0–5 as raw 12-bit values (0–4095), digital 
 
 Use **drive until digital** for a bumper or limit switch. Choose the state that means contact for the wiring in use. Both blocks have a timeout; tune speed and stopping threshold to account for sensor delay and robot momentum.
 
+## Analog profiles for noisy or nonzero background readings
+
+Configure a profile once per analog port in **Robot setup**. The profile is off by default for compatibility with older projects and sensors whose thresholds are already calibrated. When enabled, all existing analog decision paths use the same median-of-three sampling and per-port rules: generic if/while/do-while/repeat-until/wait-until conditions, analog if/wait/stable-wait, drive-until-analog, repeat-until-analog, generic sensor reporters inside conditions, and start-light waits.
+
+Set the **empty band** to the range observed with no target present. The signal direction chooses whether a target must rise above that range, fall below it, or either; the margin determines how far outside the empty band a reading must be. A stable group of samples in the empty band arms that profile. An analog comparison is treated as a target only after the configured number of median samples consistently leaves the empty band in the selected direction. Until a clear reading has first been confirmed, sensor conditions fail closed so a ghost value cannot trigger a movement. After arming, an empty-band reading makes a positive target comparison false; a negated target condition can then represent “no target detected.”
+
+Use **sample analog** and **log analog** to record raw values while the robot is stationary, then configure the port’s empty band and direction from those measurements. The profile does not convert analog values to centimeters. If empty and target readings overlap, software cannot reliably distinguish them; adjust the sensor angle or distance, or disable the filter for an input where that signal range has a different meaning. The digital/button paths use a short configurable debounce, camera detection requires consecutive confirmed frames, and raw analog/digital diagnostics remain unfiltered.
+
+## Physical controller button
+
+The **physical controller button pressed?** Boolean block reads the small built-in button on the right side of the Wombat controller. Generated native C calls `push_button()`, which returns 1 while pressed and 0 otherwise. Use it directly inside an if, while, or wait-until condition, for example to start an action only after a deliberate button press. The web simulator has no physical controller input, so its generated WebAssembly helper returns false. KIPR documents the button in its [Wombat function reference](https://www.kipr.org/wp-content/uploads/2025%20Botball/Wombat-Function-Reference-Guide.pdf) and [controller-button workshop slides](https://www.kipr.org/wp-content/uploads/2024%20Botball/2024%20Botball%20Complete%20Resource%20Slides%20v2.1.pdf).
+
 ## Conditions and loops
 
-- **if** checks a condition once and chooses a branch.
+- **if** checks a condition once and runs its body only when true.
+- **else if** blocks stack directly after a simple if or another else-if and emit a C `if / else if` chain. The older fixed **if/else** block remains available and existing saved blocks retain their behavior.
 - **while** checks before each pass and may run zero times.
 - **do while** runs once, then continues while its condition stays true.
 - **repeat until** runs at least once, then checks whether to stop repeating.

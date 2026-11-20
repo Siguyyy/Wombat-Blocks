@@ -7,11 +7,13 @@ Wombat Blocks is intentionally a small static app: `index.html` contains the lay
 ## Blockly to KIPR C
 
 1. The toolbox registers Wombat-specific blocks for the controller's motors, servos, sensors, camera, and output.
-2. `getActions()` reads connected statement stacks and value expressions into an internal action tree, including nested branches and timed loops.
+2. `getActions()` reads connected statement stacks and value expressions into an internal action tree, including nested branches, chained `if / else if` statements, and timed loops.
 3. `actionC()` turns that tree into KIPR C statements. `generateC()` wraps the statements with `kipr/wombat.h`, calibration constants, motion helpers, sensor helpers, cleanup, and `main()`.
 4. The full-file and block-only views display that same generated output; project JSON serializes Blockly state, settings, and map obstacles.
 
-The generator targets the KIPR Wombat API (`mav`, `motor`, encoder counters, `freeze`, servo calls, analog/digital input, camera, wait, and console helpers). The wheel-trim distance block sends independent MAV speed setpoints to each drive motor while monitoring each encoder target. Return-point blocks reset both encoders and keep a bounded runtime stack of calibrated drive/pivot commands for reverse-order replay; unsupported direct motor actions invalidate the trace; direct MAV commands on the configured drive ports are recorded from encoder deltas when followed by a stop block. Its Operators category currently supports variables, number values, analog/digital/encoder readings, elapsed timers, comparisons, boolean combinations, and basic arithmetic. Diagnostics can print expressions or analog samples, and stable sensor waits filter brief state changes. Loop blocks use finite timeouts so a missed sensor event cannot leave an autonomous program running indefinitely.
+The generator targets the KIPR Wombat API (`mav`, `motor`, encoder counters, `freeze`, servo calls, analog/digital input, the built-in physical button (`push_button()`), camera, wait, and console helpers). The wheel-trim distance block sends independent MAV speed setpoints to each drive motor while monitoring each encoder target. Return-point blocks reset both encoders and keep a bounded runtime stack of calibrated drive/pivot commands for reverse-order replay; unsupported direct motor actions invalidate the trace; direct MAV commands on the configured drive ports are recorded from encoder deltas when followed by a stop block. Its Operators category currently supports variables, number values, analog/digital/encoder readings, elapsed timers, comparisons, boolean combinations, and basic arithmetic. Diagnostics can print expressions or analog samples, and stable sensor waits filter brief state changes. Loop blocks use finite timeouts so a missed sensor event cannot leave an autonomous program running indefinitely.
+
+Analog input profiles are stored per port and emitted as generated C tables. Existing control conditions and sensor-driven motion call shared helpers for median sampling, empty-band arming, margin, and consecutive confirmation. Profiles are disabled by default to preserve prior sensor thresholds; raw diagnostics remain untouched. Digital/button checks use a common debounce helper, and camera branches require consecutive frame confirmation.
 
 ## Map and preview
 
@@ -21,7 +23,7 @@ Servo position commands can be paced by issuing intermediate targets every 10 ms
 
 ## Persistence
 
-- Browser autosave: local storage on that browser/device.
+- Browser autosave: local storage on that browser/device, including light/dark theme preference. The theme is also serialized in portable project settings.
 - Portable project: JSON file containing blocks, robot calibration/settings, and map obstacles. Older project formats are migrated; removed experimental waypoint blocks become comments instead of being executed.
 - Robot source: downloadable generated `main.c` for the KISS Web IDE.
 

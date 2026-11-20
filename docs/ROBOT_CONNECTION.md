@@ -53,4 +53,9 @@ The source has a permissive CORS middleware for these later routes, so a browser
 
 The browser now ends API requests after 12 seconds and reports whether it timed out, received an HTTP error, or could not read a cross-origin/local-network response. A run-output stream that never opens is reported after 10 seconds. That timeout cannot prove the robot stopped: the start request may have been accepted before the browser lost the stream, so use the controller's stop controls if the state is uncertain. These changes improve diagnostics but do not bypass browser network permissions, CORS, or firmware route differences.
 
-Keyboard drive is a generated-code option, not a remote-control connection from this web page. It polls KIPR Graphics keyboard state while the program runs; the KISS Graphics window must be open and receive the keys. The web simulator compiles this block as a no-op because its WebAssembly build lacks graphics input support; on the robot, use a native KISS build with a focused Graphics window. See the KIPR [graphics input documentation](https://www.kipr.org/doc/group__graphics.html).
+Console drive is a generated-code option, not a remote-control connection from this web page. It reads one command character at a time from the KISS program console using the same `scanf` input pattern as the macro recorder; enter a command and press Enter. The browser simulator skips the block because it does not provide program-console stdin.
+
+
+## Console drive and stop-button limits
+
+Console drive uses blocking scanf input, one command per line. While it is waiting for input, the repeat-forever controller-button stop cannot be polled; enter q to leave the drive prompt. Likewise, the KIPR wait_for_light() call is blocking and cannot be interrupted by cooperative button polling. Other generated encoder moves, paced servo moves, timed waits, sensor loops, and between-action points check the stop button when repeat-forever is configured for controller-button stop.

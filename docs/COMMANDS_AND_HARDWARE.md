@@ -5,9 +5,10 @@
 ### Motion
 
 - Drive forward or backward by encoder-measured centimeters using PWM encoder feedback, wheel synchronization, a gradual power ramp, and per-wheel stopping at the requested count.
+- Optional analog profiles configure an empty-scene band, signal direction, margin, median sampling, and stable confirmation count once per port; every existing analog decision block, including generic conditions and start-light waits, uses the same profile when enabled.
 - Pivot left/right by degrees, with separate calibration scales.
 - Move a measured distance with encoder feedback; the separate left/right distance block uses independent MAV speeds. Set a motor directly by MAV or PWM; command relative or absolute encoder positions; wait for a position move; reset an encoder.
-- Optional keyboard drive reads WASD/arrows, Space to stop, and Q to exit in native KISS Graphics. The browser simulator compiles it as a no-op.
+- Console drive reads one character from the KISS IDE program console per line: w forward, b backward, a/d pivot, s stop, r toggle and report forward/reverse gear, o/c open/close claw, p/l raise/lower arm, and q exit. Press Enter after each command. Reverse gear changes forward/backward travel; pivot directions remain left/right. It uses scanf console input, not KISS Graphics; the browser simulator skips it, and the physical stop-button mode cannot interrupt its blocking input prompt.
 - Stop using `ao()` (all motors off/coast), `freeze(port)` (active brake), or `off(port)` (release a motor).
 
 Return-point retracing records calibrated drive/pivot helpers. In v0.1.24 it also records direct MAV output on configured drive ports when a stop block closes the segment; direct PWM and motor-position actions remain unsupported by the reversible trace.
@@ -20,8 +21,12 @@ Return-point retracing records calibrated drive/pivot helpers. In v0.1.24 it als
 
 ### Control and sensors
 
+- Repeat forever to run an action stack continuously. Select controller-button stop to stop motors and exit safely when the Wombat side button is pressed, or manual-stop mode when the program will stop itself. The stop check is cooperative; blocking console input and native wait-for-light cannot be interrupted. A separate stop-program block exits safely.
+
 - Wait, repeat a fixed count, use variables and elapsed timers, or repeat until a digital state or analog threshold is reached.
-- Digital/analog conditions have then/else stacks. Sensor loops include a maximum duration and route failures to cleanup instead of running forever.
+- Use a simple if body, stackable else-if chain, or the original if/else block. Existing saved if/else blocks retain their behavior. Digital/analog conditions have then/else stacks. Sensor loops include a maximum duration and route failures to cleanup instead of running forever.
+- The **physical controller button pressed?** reporter reads the built-in side button through `push_button()` (1 while pressed, 0 otherwise), with configurable debounce. The map preview cannot model button input; WebAssembly simulation returns false.
+- Digital switch inputs use the same configurable debounce interval; camera branches and waits require a configurable number of consecutive positive frames.
 - Wait for digital input, wait for an analog threshold, or wait for the start light.
 - Wait for analog/digital states to stay stable; sample analog minimum/maximum/average; inspect encoder values; print values to the robot program console.
 - Open/update/close the camera and branch if a configured camera channel detects an object.
@@ -38,6 +43,7 @@ Return-point retracing records calibrated drive/pivot helpers. In v0.1.24 it als
 | Servos | 0–3 | Position 0–2047; mechanical range is usually smaller. |
 | Analog sensors | 0–5 | `analog12`: 0–4095. |
 | Digital sensors | 0–9 | `digital`: 0 or 1. |
+| Built-in controller button | none | `push_button`: 1 while pressed, 0 otherwise. |
 
 ## Sensor examples in the 2020 build guide
 
@@ -52,6 +58,8 @@ KIPR's sensor documentation describes common uses:
 - **Lever and touch sensors:** digital 0/1 switch inputs.
 - **Camera:** camera processing uses configured color channels. Configure those in KISS before using the camera detection blocks.
 
+KIPR identifies the physical side button as `push_button()`; the A/B/C screen-button APIs refer to separate touchscreen controls. See the [Wombat function reference](https://www.kipr.org/wp-content/uploads/2025%20Botball/Wombat-Function-Reference-Guide.pdf).
+
 An “IR sensor” label alone does not determine the output type or calibration; inspect the particular sensor and read its port before selecting an analog or digital block.
 
 ## Preview boundary
@@ -60,4 +68,4 @@ The 2D preview uses calibrated distance for straight moves and ideal pivots that
 
 ## Scratch categories and the robot mapping
 
-Scratch's core palette includes Motion, Looks, Sound, Events, Control, Sensing, Operators, Variables, and My Blocks. Wombat Blocks carries over the hardware-relevant concepts as Motion, Servos, Sensors, Control, and Output. The start block represents the program-start event; beep and console output provide basic feedback. Sprite costumes, backdrops, keyboard/mouse input, clones, and broadcasts do not correspond directly to the physical Wombat. General-purpose variables and typed math/logic generate C. Reusable procedures remain a possible future addition. Keyboard input here means KISS Graphics input; it does not send browser keys over Wi-Fi.
+Scratch's core palette includes Motion, Looks, Sound, Events, Control, Sensing, Operators, Variables, and My Blocks. Wombat Blocks carries over the hardware-relevant concepts as Motion, Servos, Sensors, Control, and Output. The start block represents the program-start event; beep and console output provide basic feedback. Sprite costumes, backdrops, keyboard/mouse input, clones, and broadcasts do not correspond directly to the physical Wombat. General-purpose variables and typed math/logic generate C. Reusable procedures remain a possible future addition. Console drive input is entered in the KISS program console; it does not send browser keys over Wi-Fi.

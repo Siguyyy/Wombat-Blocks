@@ -15,4 +15,4 @@ The repository was created from the Wombat Blocks project as it existed on 2026-
 
 `history/legacy/wombat_autonomous_fixed.c` is an earlier standalone C sample, retained as a reference; it is not the current block generator output. The snapshot files were copied from dated backups and do not imply that each file was a formally released version.
 
-The current editor includes the accumulated UI, map, calibration, robot sprite, block, and C-generation work. See [`CHANGELOG.md`](CHANGELOG.md) for the feature-level summary.
+The current editor is Wombat Blocks 2.0. It consolidates the local 0.1.25–0.1.30 feature work into a documented release while retaining the prior editor history above. See [`CHANGELOG.md`](CHANGELOG.md) for the feature-level summary and compatibility notes.
