@@ -1,0 +1,84 @@
+name: Publish Wombat Blocks release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing version tag to package and publish (for example, v2.0.0)
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out release source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+
+      - name: Build transferable Chromebook package
+        id: package
+        env:
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+        run: |
+          set -euo pipefail
+          version="${RELEASE_TAG#v}"
+          package_root="$RUNNER_TEMP/WombatBlocks_Chromebook"
+          mkdir -p "$package_root/blockly" "$package_root/docs"
+
+          cp index.html "$package_root/index.html"
+          cp index.html "$package_root/wombat_block_recorder.html"
+          cp README.md CHANGELOG.md HISTORY.md CONTRIBUTING.md "$package_root/"
+          cp -R blockly/. "$package_root/blockly/"
+          cp docs/*.md "$package_root/docs/"
+          cp docs/AI_BLOCK_PROGRAMMING_GUIDE.md "$package_root/AI_BLOCK_PROGRAMMING_GUIDE.md"
+          cp docs/COMMANDS_AND_HARDWARE.md "$package_root/COMMANDS_AND_HARDWARE.txt"
+
+          cat > "$package_root/START_HERE.txt" <<EOF
+          WOMBAT BLOCKS $version - QUICK START
+
+          1. Transfer this ZIP to your Chromebook and extract it.
+          2. Keep the blockly folder beside wombat_block_recorder.html.
+          3. Open wombat_block_recorder.html in Chrome. Blockly runs from the bundled files.
+          4. Connect blocks to “when program starts”, then choose View generated C to inspect or download main.c.
+          5. See README.md and docs/ for setup, hardware, sensor, and connection details.
+
+          AI assignment handoff
+          Use the brain/question button to create a build-specific prompt. The prompt asks the AI to provide Blockly XML in a downloadable .txt attachment. Copy the file contents into the app's XML importer, validate, and confirm before replacing the workspace.
+
+          Hardware reminder
+          Check motor and servo ports, sensor wiring, and calibration before running. Start motion checks with wheels lifted and supervise the robot.
+          EOF
+
+          archive="$GITHUB_WORKSPACE/WombatBlocks_${version}.zip"
+          (cd "$package_root" && zip -qr "$archive" .)
+          echo "archive=$archive" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
+          ARCHIVE: ${{ steps.package.outputs.archive }}
+          VERSION: ${{ steps.package.outputs.version }}
+        run: |
+          set -euo pipefail
+          notes_file=".github/release-notes/${RELEASE_TAG}.md"
+          if [[ -f "$notes_file" ]]; then
+            gh release create "$RELEASE_TAG" "$ARCHIVE" \
+              --title "Wombat Blocks $VERSION" \
+              --notes-file "$notes_file" \
+              --verify-tag
+          else
+            gh release create "$RELEASE_TAG" "$ARCHIVE" \
+              --title "Wombat Blocks $VERSION" \
+              --generate-notes \
+              --verify-tag
+          fi
